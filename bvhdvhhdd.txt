@@ -1,0 +1,46 @@
+Job_Market_Career_Recommendation/
+│
+├── data/
+│   └── job_postings.csv
+│
+├── notebooks/
+│   ├── 01_Data_Exploration.ipynb
+│   ├── 02_Skill_Analysis_NLP.ipynb
+│   ├── 03_Career_Recommendation.ipynb
+│   └── 04_Model_Evaluation.ipynb
+│
+├── dashboard/
+│
+├── web_app/
+│
+├── reports/
+│
+└── README.md
+
+
+
+
+
+
+
+01_Data_Exploration
+│
+├── 1. Introduction
+├── 2. Import Libraries
+├── 3. Load Dataset
+├── 4. Dataset Overview
+├── 5. Data Types
+├── 6. Missing Values
+├── 7. Duplicate Records
+├── 8. Descriptive Statistics
+├── 9. Job Role Analysis
+├── 10. Industry Analysis
+├── 11. Experience Analysis
+├── 12. Education Analysis
+├── 13. Salary Analysis
+├── 14. Remote Work Analysis
+├── 15. Date/Trend Analysis
+├── 16. Skill Analysis
+├── 17. Career-Specific Skill Analysis
+├── 18. EDA Visualizations
+└── 19. Key Findings & Conclusion

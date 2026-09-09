@@ -1,0 +1,118 @@
+Skill,Job_Postings,Demand_Percentage,Career
+scikit-learn,657,44.27,Data Scientist
+NLP,649,43.73,Data Scientist
+SQL,645,43.46,Data Scientist
+A/B Testing,642,43.26,Data Scientist
+Machine Learning,638,42.99,Data Scientist
+R,636,42.86,Data Scientist
+Spark,632,42.59,Data Scientist
+Statistics,625,42.12,Data Scientist
+TensorFlow,624,42.05,Data Scientist
+Deep Learning,617,41.58,Data Scientist
+Python,605,40.77,Data Scientist
+PyTorch,604,40.7,Data Scientist
+Tableau,592,39.89,Data Scientist
+Jupyter,576,38.81,Data Scientist
+AWS,678,45.32,Data Engineer
+Airflow,671,44.85,Data Engineer
+BigQuery,670,44.79,Data Engineer
+Spark,670,44.79,Data Engineer
+Kafka,666,44.52,Data Engineer
+dbt,663,44.32,Data Engineer
+SQL,663,44.32,Data Engineer
+Python,655,43.78,Data Engineer
+Redshift,649,43.38,Data Engineer
+PostgreSQL,647,43.25,Data Engineer
+Snowflake,646,43.18,Data Engineer
+Azure,641,42.85,Data Engineer
+Terraform,639,42.71,Data Engineer
+Data Analysis,919,60.46,Product Manager
+Roadmapping,908,59.74,Product Manager
+Figma,908,59.74,Product Manager
+User Research,898,59.08,Product Manager
+Agile,897,59.01,Product Manager
+Product Strategy,896,58.95,Product Manager
+JIRA,894,58.82,Product Manager
+A/B Testing,893,58.75,Product Manager
+SQL,880,57.89,Product Manager
+Stakeholder Management,872,57.37,Product Manager
+PyTorch,967,66.74,Research Scientist
+Python,963,66.46,Research Scientist
+Publication Record,962,66.39,Research Scientist
+TensorFlow,948,65.42,Research Scientist
+Experimentation,944,65.15,Research Scientist
+LaTeX,943,65.08,Research Scientist
+Machine Learning,936,64.6,Research Scientist
+Statistics,935,64.53,Research Scientist
+Deep Learning,933,64.39,Research Scientist
+Java,733,50.1,Backend Engineer
+gRPC,728,49.76,Backend Engineer
+Python,727,49.69,Backend Engineer
+Redis,722,49.35,Backend Engineer
+Kafka,722,49.35,Backend Engineer
+SQL,718,49.08,Backend Engineer
+AWS,710,48.53,Backend Engineer
+PostgreSQL,706,48.26,Backend Engineer
+Go,693,47.37,Backend Engineer
+Docker,687,46.96,Backend Engineer
+Kubernetes,687,46.96,Backend Engineer
+REST APIs,678,46.34,Backend Engineer
+Jenkins,698,48.07,DevOps Engineer
+AWS,691,47.59,DevOps Engineer
+Prometheus,675,46.49,DevOps Engineer
+Ansible,669,46.07,DevOps Engineer
+Python,662,45.59,DevOps Engineer
+Grafana,661,45.52,DevOps Engineer
+Linux,661,45.52,DevOps Engineer
+GCP,660,45.45,DevOps Engineer
+CI/CD,657,45.25,DevOps Engineer
+Docker,655,45.11,DevOps Engineer
+Terraform,639,44.01,DevOps Engineer
+Azure,624,42.98,DevOps Engineer
+Kubernetes,623,42.91,DevOps Engineer
+Python,641,41.3,Software Engineer
+Git,615,39.63,Software Engineer
+Kubernetes,612,39.43,Software Engineer
+REST APIs,611,39.37,Software Engineer
+TypeScript,609,39.24,Software Engineer
+Go,604,38.92,Software Engineer
+Docker,600,38.66,Software Engineer
+Redis,594,38.27,Software Engineer
+AWS,593,38.21,Software Engineer
+JavaScript,587,37.82,Software Engineer
+Java,587,37.82,Software Engineer
+C++,586,37.76,Software Engineer
+SQL,581,37.44,Software Engineer
+Rust,568,36.6,Software Engineer
+PostgreSQL,558,35.95,Software Engineer
+AWS SageMaker,766,50.59,ML Engineer
+Spark,762,50.33,ML Engineer
+TensorFlow,758,50.07,ML Engineer
+Kubernetes,751,49.6,ML Engineer
+MLflow,745,49.21,ML Engineer
+Python,743,49.08,ML Engineer
+CI/CD,737,48.68,ML Engineer
+PyTorch,733,48.41,ML Engineer
+Docker,733,48.41,ML Engineer
+Airflow,732,48.35,ML Engineer
+Feature Stores,730,48.22,ML Engineer
+Databricks,726,47.95,ML Engineer
+User Research,995,64.19,UX Designer
+Design Systems,990,63.87,UX Designer
+Sketch,982,63.35,UX Designer
+Usability Testing,979,63.16,UX Designer
+Prototyping,976,62.97,UX Designer
+HTML/CSS,971,62.65,UX Designer
+Wireframing,963,62.13,UX Designer
+Figma,961,62.0,UX Designer
+Adobe XD,959,61.87,UX Designer
+A/B Testing,897,59.01,Data Analyst
+Statistics,894,58.82,Data Analyst
+Tableau,890,58.55,Data Analyst
+Excel,887,58.36,Data Analyst
+dbt,884,58.16,Data Analyst
+Power BI,883,58.09,Data Analyst
+Google Analytics,880,57.89,Data Analyst
+Looker,880,57.89,Data Analyst
+Python,877,57.7,Data Analyst
+SQL,876,57.63,Data Analyst

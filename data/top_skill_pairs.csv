@@ -1,0 +1,16 @@
+Skill_1,Skill_2,Cooccurrence
+Python,SQL,1709
+Python,Statistics,1474
+A/B Testing,SQL,1367
+Kubernetes,Python,1322
+Python,TensorFlow,1319
+PyTorch,TensorFlow,1293
+Docker,Python,1290
+PyTorch,Python,1281
+Docker,Kubernetes,1233
+Figma,User Research,1228
+AWS,Python,1208
+Deep Learning,PyTorch,953
+Python,Spark,941
+Machine Learning,PyTorch,935
+Deep Learning,Machine Learning,926

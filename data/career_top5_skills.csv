@@ -1,0 +1,51 @@
+title,Skill,Job_Postings,Demand_Percentage
+Backend Engineer,Java,733,50.1
+Backend Engineer,gRPC,728,49.76
+Backend Engineer,Python,727,49.69
+Backend Engineer,Kafka,722,49.35
+Backend Engineer,Redis,722,49.35
+Data Analyst,A/B Testing,897,59.01
+Data Analyst,Statistics,894,58.82
+Data Analyst,Tableau,890,58.55
+Data Analyst,Excel,887,58.36
+Data Analyst,dbt,884,58.16
+Data Engineer,AWS,678,45.32
+Data Engineer,Airflow,671,44.85
+Data Engineer,BigQuery,670,44.79
+Data Engineer,Spark,670,44.79
+Data Engineer,Kafka,666,44.52
+Data Scientist,scikit-learn,657,44.27
+Data Scientist,NLP,649,43.73
+Data Scientist,SQL,645,43.46
+Data Scientist,A/B Testing,642,43.26
+Data Scientist,Machine Learning,638,42.99
+DevOps Engineer,Jenkins,698,48.07
+DevOps Engineer,AWS,691,47.59
+DevOps Engineer,Prometheus,675,46.49
+DevOps Engineer,Ansible,669,46.07
+DevOps Engineer,Python,662,45.59
+ML Engineer,AWS SageMaker,766,50.59
+ML Engineer,Spark,762,50.33
+ML Engineer,TensorFlow,758,50.07
+ML Engineer,Kubernetes,751,49.6
+ML Engineer,MLflow,745,49.21
+Product Manager,Data Analysis,919,60.46
+Product Manager,Figma,908,59.74
+Product Manager,Roadmapping,908,59.74
+Product Manager,User Research,898,59.08
+Product Manager,Agile,897,59.01
+Research Scientist,PyTorch,967,66.74
+Research Scientist,Python,963,66.46
+Research Scientist,Publication Record,962,66.39
+Research Scientist,TensorFlow,948,65.42
+Research Scientist,Experimentation,944,65.15
+Software Engineer,Python,641,41.3
+Software Engineer,Git,615,39.63
+Software Engineer,Kubernetes,612,39.43
+Software Engineer,REST APIs,611,39.37
+Software Engineer,TypeScript,609,39.24
+UX Designer,User Research,995,64.19
+UX Designer,Design Systems,990,63.87
+UX Designer,Sketch,982,63.35
+UX Designer,Usability Testing,979,63.16
+UX Designer,Prototyping,976,62.97

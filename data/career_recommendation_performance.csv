@@ -1,0 +1,11 @@
+Career,Precision,Recall,F1_Score,Support
+Backend Engineer,0.927,0.997,0.961,293
+Data Analyst,0.997,1.0,0.998,304
+Data Engineer,1.0,0.98,0.99,299
+Data Scientist,1.0,0.98,0.99,297
+DevOps Engineer,0.997,0.99,0.993,290
+ML Engineer,0.984,0.997,0.99,303
+Product Manager,1.0,0.997,0.998,304
+Research Scientist,0.98,1.0,0.99,290
+Software Engineer,1.0,0.939,0.968,310
+UX Designer,0.997,1.0,0.998,310

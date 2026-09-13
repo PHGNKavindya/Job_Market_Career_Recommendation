@@ -127,6 +127,109 @@ def recommend_careers():
 
 
 # --------------------------------------------------
+# Career Details
+# --------------------------------------------------
+
+@app.route("/api/career/<career>")
+def get_career_details(career):
+
+    if career not in career_skill_vectors.index:
+        return jsonify({
+            "error": "Career not found."
+        }), 404
+
+    career_profile = career_skill_vectors.loc[career]
+
+    required_skills = career_profile[
+        career_profile > 0
+    ].sort_values(ascending=False)
+
+    skills = []
+
+    for skill, demand in required_skills.items():
+        skills.append({
+            "skill": skill,
+            "demand_percentage": round(float(demand * 100), 2)
+        })
+
+    return jsonify({
+        "career": career,
+        "required_skills": skills
+    })
+
+
+# --------------------------------------------------
+# Skill Gap Analysis
+# --------------------------------------------------
+
+@app.route("/api/skill-gap/<career>", methods=["POST"])
+def get_skill_gap(career):
+
+    if career not in career_skill_vectors.index:
+        return jsonify({
+            "error": "Career not found."
+        }), 404
+
+    data = request.get_json()
+
+    user_skills = data.get("skills", [])
+
+    if not user_skills:
+        return jsonify({
+            "error": "Please provide at least one skill."
+        }), 400
+
+    # Clean user skills
+    user_skills = [
+        skill.strip()
+        for skill in user_skills
+        if isinstance(skill, str)
+    ]
+
+    # Skills available in the dataset
+    available_skills = career_skill_vectors.columns
+
+    matched_skills = [
+        skill
+        for skill in user_skills
+        if skill in available_skills
+    ]
+
+    unmatched_skills = [
+        skill
+        for skill in user_skills
+        if skill not in available_skills
+    ]
+
+    # Get required skills for selected career
+    career_profile = career_skill_vectors.loc[career]
+
+    required_skills = career_profile[
+        career_profile > 0
+    ].sort_values(ascending=False)
+
+    # Find missing skills
+    missing_skills = required_skills[
+        ~required_skills.index.isin(matched_skills)
+    ]
+
+    skill_gap = []
+
+    for skill, demand in missing_skills.items():
+        skill_gap.append({
+            "skill": skill,
+            "demand_percentage": round(float(demand * 100), 2)
+        })
+
+    return jsonify({
+        "career": career,
+        "matched_skills": matched_skills,
+        "unmatched_skills": unmatched_skills,
+        "missing_skills": skill_gap
+    })
+
+
+# --------------------------------------------------
 # Run application
 # --------------------------------------------------
 

@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import CareerRecommendation from './pages/CareerRecommendation'
 import CareerDetails from './pages/CareerDetails'
 import CareerExplorer from './pages/CareerExplorer'
+import Dashboard from './pages/Dashboard'
 import './App.css'
 
 
@@ -24,7 +25,9 @@ function Navbar() {
           Career Explorer
         </Link>
 
-        <a href="#">Dashboard</a>
+        <Link to="/dashboard">
+          Dashboard
+        </Link>
 
         <a href="#">Skills</a>
       </div>
@@ -221,6 +224,11 @@ function App() {
         <Route
           path="/careers"
           element={<CareerExplorer />}
+        />
+
+        <Route
+          path="/dashboard"
+          element={<Dashboard />}
         />
 
       </Routes>

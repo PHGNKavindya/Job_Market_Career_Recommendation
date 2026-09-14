@@ -793,3 +793,932 @@ footer {
   }
 
 }
+
+/* ==========================================
+   Job Market Dashboard
+   ========================================== */
+
+.dashboard-page {
+  min-height: 100vh;
+  background: #f7f9fc;
+  padding-bottom: 80px;
+}
+
+.dashboard-header {
+  text-align: center;
+  padding: 55px 20px 35px;
+}
+
+.dashboard-header h1 {
+  font-size: 44px;
+  color: #172033;
+  margin-bottom: 15px;
+}
+
+.dashboard-header p:last-child {
+  max-width: 700px;
+  margin: auto;
+  color: #6b7280;
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+
+/* Summary Cards */
+
+.dashboard-summary {
+  max-width: 1100px;
+  margin: 0 auto 35px;
+  padding: 0 25px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.summary-card {
+  background: white;
+  padding: 25px;
+  border-radius: 14px;
+  text-align: center;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+}
+
+.summary-card h2 {
+  font-size: 32px;
+  color: #4f46e5;
+  margin-bottom: 8px;
+}
+
+.summary-card p {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+
+/* Charts */
+
+.dashboard-charts {
+  max-width: 1100px;
+  margin: auto;
+  padding: 0 25px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+}
+
+.dashboard-chart-card {
+  background: white;
+  padding: 25px;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+}
+
+.dashboard-chart-card h2 {
+  color: #172033;
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+
+/* Responsive */
+
+@media (max-width: 900px) {
+
+  .dashboard-charts {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-summary {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  .dashboard-header h1 {
+    font-size: 34px;
+  }
+
+}
+
+/* ==========================================
+   Dashboard Charts
+   ========================================== */
+
+.dashboard-message {
+  min-height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #172033;
+  font-size: 20px;
+}
+
+
+.horizontal-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+}
+
+.horizontal-chart-item {
+  width: 100%;
+}
+
+.chart-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 7px;
+  font-size: 14px;
+  color: #172033;
+}
+
+.chart-label strong {
+  color: #4f46e5;
+}
+
+.chart-bar-background {
+  width: 100%;
+  height: 10px;
+  background: #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.chart-bar {
+  height: 100%;
+  background: #4f46e5;
+  border-radius: 10px;
+  transition: width 0.5s ease;
+}
+
+/* ==========================================
+   Professional Dashboard
+   ========================================== */
+
+.dashboard-page {
+  min-height: 100vh;
+  background: #f5f7fb;
+  padding-bottom: 60px;
+}
+
+.dashboard-header {
+  max-width: 1200px;
+  margin: auto;
+  padding: 45px 25px 30px;
+}
+
+.dashboard-header h1 {
+  font-size: 38px;
+  color: #172033;
+  margin-bottom: 10px;
+}
+
+.dashboard-header p:last-child {
+  color: #6b7280;
+  font-size: 15px;
+}
+
+
+/* KPI Cards */
+
+.dashboard-summary {
+  max-width: 1200px;
+  margin: 0 auto 25px;
+  padding: 0 25px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+.summary-card {
+  background: white;
+  padding: 22px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.04);
+}
+
+.summary-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #6b7280;
+}
+
+.summary-card h2 {
+  font-size: 29px;
+  color: #4f46e5;
+  margin: 8px 0 5px;
+}
+
+.summary-card p {
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+
+/* Dashboard Grid */
+
+.dashboard-grid {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 25px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+
+/* Chart Cards */
+
+.dashboard-chart-card {
+  background: white;
+  padding: 25px;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.04);
+}
+
+.large-card {
+  min-height: 520px;
+}
+
+.chart-card-header {
+  margin-bottom: 22px;
+}
+
+.chart-card-header h2 {
+  color: #172033;
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.chart-card-header p {
+  color: #9ca3af;
+  font-size: 13px;
+}
+
+
+/* Horizontal Charts */
+
+.horizontal-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.horizontal-chart-item {
+  width: 100%;
+}
+
+.chart-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+
+.chart-label span {
+  color: #374151;
+}
+
+.chart-label strong {
+  color: #4f46e5;
+}
+
+.chart-bar-background {
+  width: 100%;
+  height: 9px;
+  background: #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.chart-bar {
+  height: 100%;
+  background: #4f46e5;
+  border-radius: 10px;
+  transition: width 0.5s ease;
+}
+
+.salary-bar {
+  background: #6366f1;
+}
+
+
+/* Year Chart */
+
+.year-chart {
+  height: 250px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  gap: 30px;
+  padding: 10px 20px 0;
+}
+
+.year-item {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 7px;
+  flex: 1;
+}
+
+.year-bar-container {
+  height: 190px;
+  width: 55px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.year-bar {
+  width: 100%;
+  min-height: 5px;
+  background: #4f46e5;
+  border-radius: 7px 7px 0 0;
+}
+
+.year-item strong {
+  color: #172033;
+  font-size: 14px;
+}
+
+.year-item span {
+  color: #6b7280;
+  font-size: 12px;
+}
+
+
+/* Responsive */
+
+@media (max-width: 1000px) {
+
+  .dashboard-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+@media (max-width: 600px) {
+
+  .dashboard-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-header h1 {
+    font-size: 32px;
+  }
+
+  .dashboard-grid {
+    padding: 0 15px;
+  }
+
+  .dashboard-summary {
+    padding: 0 15px;
+  }
+
+}
+
+
+/* ==========================================
+   Compact Dashboard
+   ========================================== */
+
+.dashboard-page {
+  min-height: calc(100vh - 70px);
+  background: #f5f7fb;
+  padding-bottom: 30px;
+}
+
+.dashboard-header {
+  max-width: 1200px;
+  margin: auto;
+  padding: 25px 25px 20px;
+  text-align: center;
+}
+
+.dashboard-header h1 {
+  font-size: 34px;
+  color: #172033;
+  margin-bottom: 6px;
+}
+
+.dashboard-header p:last-child {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+
+/* KPI Cards */
+
+.dashboard-summary {
+  max-width: 1200px;
+  margin: 0 auto 18px;
+  padding: 0 25px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.summary-card {
+  background: white;
+  padding: 15px 18px;
+  border-radius: 11px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+}
+
+.summary-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #6b7280;
+}
+
+.summary-card h2 {
+  font-size: 25px;
+  color: #4f46e5;
+  margin: 5px 0 3px;
+}
+
+.summary-card p {
+  color: #9ca3af;
+  font-size: 11px;
+}
+
+
+/* Main Grid */
+
+.dashboard-grid {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 25px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+
+/* Chart Cards */
+
+.dashboard-chart-card {
+  background: white;
+  padding: 18px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+}
+
+.chart-card-header {
+  margin-bottom: 14px;
+}
+
+.chart-card-header h2 {
+  color: #172033;
+  font-size: 17px;
+  margin-bottom: 3px;
+}
+
+.chart-card-header p {
+  color: #9ca3af;
+  font-size: 11px;
+}
+
+
+/* Bars */
+
+.horizontal-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.horizontal-chart-item {
+  width: 100%;
+}
+
+.chart-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+  font-size: 11px;
+}
+
+.chart-label span {
+  color: #374151;
+}
+
+.chart-label strong {
+  color: #4f46e5;
+  font-size: 11px;
+}
+
+.chart-bar-background {
+  width: 100%;
+  height: 7px;
+  background: #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.chart-bar {
+  height: 100%;
+  background: #4f46e5;
+  border-radius: 10px;
+}
+
+.salary-bar {
+  background: #6366f1;
+}
+
+
+/* Responsive */
+
+@media (max-width: 900px) {
+
+  .dashboard-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+@media (max-width: 600px) {
+
+  .dashboard-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-header h1 {
+    font-size: 28px;
+  }
+
+  .dashboard-grid,
+  .dashboard-summary {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+}
+
+
+/* ==========================================
+   Dashboard Filters
+   ========================================== */
+
+.dashboard-filters {
+  display: flex;
+  justify-content: center;
+  margin-top: 18px;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.filter-group select {
+  min-width: 200px;
+  padding: 9px 35px 9px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 7px;
+  background: white;
+  color: #172033;
+  font-size: 13px;
+  cursor: pointer;
+  outline: none;
+}
+
+.filter-group select:focus {
+  border-color: #4f46e5;
+}
+
+
+.reset-filter-btn {
+  padding: 9px 16px;
+  border: none;
+  border-radius: 6px;
+  background: #333;
+  color: white;
+  font-size: 13px;
+  cursor: pointer;
+  margin-top: 22px;
+}
+
+.reset-filter-btn:hover {
+  background: #555;
+}
+
+/* ==================================================
+   Compact Dashboard Layout
+   ================================================== */
+
+.dashboard-page {
+  padding-bottom: 20px;
+}
+
+.dashboard-summary {
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.summary-card {
+  padding: 18px 16px;
+}
+
+.summary-card h2 {
+  margin: 8px 0 4px;
+  font-size: 30px;
+}
+
+.summary-card p {
+  margin: 0;
+  font-size: 12px;
+}
+
+.dashboard-grid {
+  gap: 16px;
+}
+
+.dashboard-chart-card {
+  padding: 20px 22px;
+  min-height: 0;
+}
+
+.chart-card-header {
+  margin-bottom: 18px;
+}
+
+.chart-card-header h2 {
+  font-size: 19px;
+  margin-bottom: 5px;
+}
+
+.chart-card-header p {
+  font-size: 12px;
+}
+
+.horizontal-chart {
+  gap: 12px;
+}
+
+.horizontal-chart-item {
+  margin-bottom: 0;
+}
+
+
+/* Compact Dashboard Header */
+
+.dashboard-header {
+  padding-top: 28px;
+  padding-bottom: 20px;
+}
+
+.dashboard-header .tagline {
+  margin: 0 0 8px;
+  font-size: 12px;
+}
+
+.dashboard-header h1 {
+  margin: 0 0 8px;
+  font-size: 32px;
+}
+
+.dashboard-header > p {
+  margin: 0 0 18px;
+  font-size: 15px;
+}
+
+.dashboard-filters {
+  margin-top: 0;
+}
+
+
+
+
+/* Final Dashboard Chart Compactness */
+
+.dashboard-chart-card {
+  padding: 15px 18px;
+}
+
+.chart-card-header {
+  margin-bottom: 10px;
+}
+
+.chart-card-header h2 {
+  font-size: 18px;
+  margin-bottom: 2px;
+}
+
+.chart-card-header p {
+  font-size: 11px;
+}
+
+.horizontal-chart {
+  gap: 7px;
+}
+
+.chart-label {
+  margin-bottom: 3px;
+  font-size: 12px;
+}
+
+.chart-label strong {
+  font-size: 12px;
+}
+
+.chart-bar-background {
+  height: 6px;
+}
+
+
+/* ==========================================
+   FINAL DASHBOARD SCREEN FIT
+   ========================================== */
+
+.dashboard-page {
+  min-height: calc(100vh - 70px);
+  padding-bottom: 10px;
+}
+
+.dashboard-header {
+  padding: 18px 25px 12px !important;
+}
+
+.dashboard-header .tagline {
+  margin: 0 0 5px !important;
+  font-size: 11px !important;
+}
+
+.dashboard-header h1 {
+  font-size: 30px !important;
+  margin: 0 0 5px !important;
+}
+
+.dashboard-header > p {
+  font-size: 13px !important;
+  margin: 0 0 12px !important;
+}
+
+.dashboard-filters {
+  margin-top: 0 !important;
+}
+
+.filter-group select {
+  min-width: 180px;
+  padding: 7px 30px 7px 10px;
+}
+
+.reset-filter-btn {
+  margin-top: 20px;
+  padding: 8px 14px;
+}
+
+/* KPI section */
+
+.dashboard-summary {
+  margin-bottom: 12px !important;
+  gap: 12px !important;
+}
+
+.summary-card {
+  padding: 12px 15px !important;
+}
+
+.summary-card h2 {
+  font-size: 25px !important;
+  margin: 4px 0 2px !important;
+}
+
+.summary-card p {
+  font-size: 10px !important;
+}
+
+/* Chart section */
+
+.dashboard-grid {
+  gap: 12px !important;
+}
+
+.dashboard-chart-card {
+  padding: 14px 17px !important;
+}
+
+.chart-card-header {
+  margin-bottom: 8px !important;
+}
+
+.chart-card-header h2 {
+  font-size: 17px !important;
+  margin-bottom: 2px !important;
+}
+
+.chart-card-header p {
+  font-size: 10px !important;
+}
+
+.horizontal-chart {
+  gap: 6px !important;
+}
+
+.chart-label {
+  font-size: 11px !important;
+  margin-bottom: 2px !important;
+}
+
+.chart-label strong {
+  font-size: 11px !important;
+}
+
+.chart-bar-background {
+  height: 5px !important;
+}
+
+/* ==========================================
+   Dashboard 2x2 Screen Fit
+   ========================================== */
+
+.dashboard-grid {
+  grid-auto-rows: 195px !important;
+  gap: 12px !important;
+}
+
+.dashboard-chart-card {
+  height: 195px !important;
+  min-height: 195px !important;
+  padding: 10px 18px !important;
+  overflow: hidden;
+}
+
+.chart-card-header {
+  margin-bottom: 5px !important;
+}
+
+.chart-card-header h2 {
+  font-size: 16px !important;
+  margin-bottom: 1px !important;
+}
+
+.chart-card-header p {
+  font-size: 10px !important;
+}
+
+.horizontal-chart {
+  gap: 3px !important;
+}
+
+.chart-label {
+  font-size: 10px !important;
+  margin-bottom: 1px !important;
+  line-height: 13px !important;
+}
+
+.chart-label strong {
+  font-size: 10px !important;
+}
+
+.chart-bar-background {
+  height: 5px !important;
+}
+
+.chart-card-header {
+  margin-bottom: 8px !important;
+}
+
+.horizontal-chart {
+  gap: 6px !important;
+}
+
+.chart-label {
+  margin-bottom: 2px !important;
+}
+
+.chart-bar-background {
+  height: 6px !important;
+}

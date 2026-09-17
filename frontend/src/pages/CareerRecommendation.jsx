@@ -7,6 +7,7 @@ function CareerRecommendation() {
   const savedSkills = sessionStorage.getItem('userSkills')
   return savedSkills ? JSON.parse(savedSkills) : []
   })
+  const [availableSkills, setAvailableSkills] = useState([])
   const [recommendations, setRecommendations] = useState([])
   const [matchedSkills, setMatchedSkills] = useState([])
   const [unmatchedSkills, setUnmatchedSkills] = useState([])
@@ -21,16 +22,50 @@ function CareerRecommendation() {
   )
   }, [skills])
 
+
+  useEffect(() => {
+  const fetchSkills = async () => {
+    try {
+      const response = await fetch(
+        'http://127.0.0.1:5000/api/skills'
+      )
+
+      const data = await response.json()
+
+      if (response.ok) {
+        setAvailableSkills(data.skills)
+      }
+    } catch (err) {
+      console.error('Failed to load skills:', err)
+    }
+  }
+
+  fetchSkills()
+}, [])
+
   const addSkill = () => {
     const skill = skillInput.trim()
 
     if (!skill) return
 
-    if (!skills.includes(skill)) {
-      setSkills([...skills, skill])
+    const matchedSkill = availableSkills.find(
+      (item) =>
+        item.toLowerCase() === skill.toLowerCase()
+    )
+
+    if (!matchedSkill) {
+      setError(
+        'Please select a skill from the available skill list.'
+      )
+      return
+    }
+
+    if (!skills.includes(matchedSkill)) {
+      setSkills([...skills, matchedSkill])
     }
 
     setSkillInput('')
+    setError('')
   }
 
   const removeSkill = (skillToRemove) => {
@@ -148,7 +183,17 @@ if (data.recommendations && data.recommendations.length > 0) {
                 }
               }}
               placeholder="e.g. Python"
+              list="skills-list"
             />
+
+            <datalist id="skills-list">
+              {availableSkills.map((skill) => (
+                <option
+                  value={skill}
+                  key={skill}
+                />
+              ))}
+            </datalist>
 
             <button onClick={addSkill}>
               Add Skill

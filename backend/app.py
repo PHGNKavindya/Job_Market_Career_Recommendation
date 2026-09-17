@@ -61,6 +61,21 @@ def get_careers():
 
 
 # ==================================================
+# Get Available Skills
+# ==================================================
+
+@app.route("/api/skills")
+def get_skills():
+
+    skills = career_skill_vectors.columns.tolist()
+
+    return jsonify({
+        "skills": skills
+    })
+
+
+
+# ==================================================
 # Career Recommendation
 # ==================================================
 

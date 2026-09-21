@@ -25,24 +25,29 @@ function CareerRecommendation() {
 
 
   useEffect(() => {
-  const fetchSkills = async () => {
-    try {
-      const response = await fetch(
-        'http://127.0.0.1:5000/api/skills'
-      )
+    const fetchSkills = async () => {
+      try {
+        const response = await fetch(
+          'http://127.0.0.1:5000/api/skills'
+        )
 
-      const data = await response.json()
+        const data = await response.json()
 
-      if (response.ok) {
-        setAvailableSkills(data.skills)
+        if (!response.ok) {
+          throw new Error('Failed to load skills.')
+        }
+
+        setAvailableSkills(
+          (data.skills || []).map((item) => item.skill)
+        )
+
+      } catch (err) {
+        console.error('Failed to load skills:', err)
       }
-    } catch (err) {
-      console.error('Failed to load skills:', err)
     }
-  }
 
-  fetchSkills()
-}, [])
+    fetchSkills()
+  }, [])
 
   const addSkill = () => {
     const skill = skillInput.trim()

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 function Skills() {
   const [skills, setSkills] = useState([])
+  const [search, setSearch] = useState('')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
@@ -29,6 +30,14 @@ function Skills() {
     fetchSkills()
   }, [])
 
+  const filteredSkills = skills.filter((item) =>
+    item.skill.toLowerCase().includes(search.toLowerCase())
+  )
+
+  const highestDemand = skills.length > 0
+    ? skills[0].demand
+    : 1
+
   if (loading) {
     return (
       <div className="dashboard-message">
@@ -48,6 +57,8 @@ function Skills() {
   return (
     <div className="skills-page">
 
+      {/* Header */}
+
       <div className="skills-header">
 
         <p className="tagline">
@@ -60,19 +71,63 @@ function Skills() {
 
         <p>
           Explore the skills identified from job postings
-          and understand their importance across different careers.
+          and understand their demand across the job market.
         </p>
 
       </div>
 
 
+      {/* Summary */}
+
+      <div className="skills-summary">
+
+        <div className="skills-summary-card">
+          <span>Total Skills</span>
+          <strong>{skills.length}</strong>
+        </div>
+
+        <div className="skills-summary-card">
+          <span>Total Job Postings</span>
+          <strong>15,000</strong>
+        </div>
+
+        <div className="skills-summary-card">
+          <span>Highest Demand</span>
+          <strong>
+            {skills.length > 0 ? skills[0].skill : '-'}
+          </strong>
+        </div>
+
+      </div>
+
+
+      {/* Search */}
+
+      <div className="skills-search">
+
+        <input
+          type="text"
+          placeholder="Search for a skill..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+
+      </div>
+
+
+      {/* Skills */}
+
       <div className="skills-container">
 
-        <div className="skills-summary">
+        <div className="skills-list-header">
 
-          <div className="skills-summary-card">
-            <span>Total Skills</span>
-            <strong>{skills.length}</strong>
+          <div>
+            <h2>Skill Demand</h2>
+
+            <p>
+              {filteredSkills.length} skill
+              {filteredSkills.length !== 1 ? 's' : ''} found
+            </p>
           </div>
 
         </div>
@@ -80,30 +135,61 @@ function Skills() {
 
         <div className="skills-grid">
 
-          {skills.map((skill, index) => (
+          {filteredSkills.map((item, index) => (
 
             <div
               className="skill-explorer-card"
-              key={skill}
+              key={item.skill}
             >
 
-              <div className="skill-number">
-                #{index + 1}
+              <div className="skill-card-top">
+
+                <span className="skill-number">
+                  #{skills.indexOf(item) + 1}
+                </span>
+
+                <span className="skill-demand">
+                  {item.demand}%
+                </span>
+
               </div>
 
+
               <h2>
-                {skill}
+                {item.skill}
               </h2>
 
+
               <p>
-                Skill identified from job market data
+                Required in {item.count.toLocaleString()} job postings
               </p>
+
+
+              <div className="skill-bar-background">
+
+                <div
+                  className="skill-bar-fill"
+                  style={{
+                    width: `${(item.demand / highestDemand) * 100}%`
+                  }}
+                />
+
+              </div>
 
             </div>
 
           ))}
 
         </div>
+
+
+        {filteredSkills.length === 0 && (
+
+          <div className="skills-empty">
+            No skills found matching "{search}".
+          </div>
+
+        )}
 
       </div>
 

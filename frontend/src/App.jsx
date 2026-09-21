@@ -4,6 +4,7 @@ import CareerDetails from './pages/CareerDetails'
 import CareerExplorer from './pages/CareerExplorer'
 import Skills from './pages/Skills'
 import Dashboard from './pages/Dashboard'
+import About from './pages/About'
 import './App.css'
 
 
@@ -226,6 +227,11 @@ function App() {
         <Route
           path="/dashboard"
           element={<Dashboard />}
+        />
+
+        <Route 
+          path="/about" 
+          element={<About />} 
         />
 
       </Routes>

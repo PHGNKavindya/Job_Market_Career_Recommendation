@@ -1,8 +1,13 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+import os
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 
+
+# ==================================================
+# Flask Application
+# ==================================================
 
 app = Flask(__name__)
 CORS(app)
@@ -17,6 +22,7 @@ career_skill_matrix = pd.read_csv(
     index_col=0
 )
 
+
 # Convert percentages to proportions
 career_skill_vectors = career_skill_matrix / 100
 
@@ -29,6 +35,8 @@ job_data = pd.read_csv(
     "data/job_postings_processed.csv"
 )
 
+
+# Convert posted date to datetime
 job_data["posted_date"] = pd.to_datetime(
     job_data["posted_date"]
 )
@@ -67,12 +75,33 @@ def get_careers():
 @app.route("/api/skills")
 def get_skills():
 
-    skills = career_skill_vectors.columns.tolist()
+    skill_counts = (
+        job_data["required_skills"]
+        .dropna()
+        .str.split("|")
+        .explode()
+        .str.strip()
+        .value_counts()
+    )
+
+    total_jobs = len(job_data)
+
+    skills = []
+
+    for skill, count in skill_counts.items():
+
+        demand_percentage = (count / total_jobs) * 100
+
+        skills.append({
+            "skill": skill,
+            "count": int(count),
+            "demand": round(demand_percentage, 2)
+        })
 
     return jsonify({
+        "total_skills": len(skills),
         "skills": skills
     })
-
 
 
 # ==================================================
@@ -357,7 +386,9 @@ def get_dashboard_data():
             filtered_data["industry"] == industry_filter
         ]
 
+
     if experience_filter and experience_filter != "All":
+
         filtered_data = filtered_data[
             filtered_data["experience_level"] == experience_filter
         ]
@@ -516,19 +547,29 @@ def get_dashboard_data():
     return jsonify({
 
         "summary": {
-        "total_jobs": int(total_jobs),
-        "total_careers": int(total_careers),
-        "total_skills": int(total_skills),
-        "average_salary": round(
-            float(filtered_data["salary_avg"].mean()), 2
-        ),
-        "average_applications": round(
-            float(filtered_data["applications"].mean()), 2
-        ),
-        "average_days_to_fill": round(
-            float(filtered_data["days_to_fill"].mean()), 2
-        )
-    },
+
+            "total_jobs": int(total_jobs),
+
+            "total_careers": int(total_careers),
+
+            "total_skills": int(total_skills),
+
+            "average_salary": round(
+                float(filtered_data["salary_avg"].mean()),
+                2
+            ),
+
+            "average_applications": round(
+                float(filtered_data["applications"].mean()),
+                2
+            ),
+
+            "average_days_to_fill": round(
+                float(filtered_data["days_to_fill"].mean()),
+                2
+            )
+
+        },
 
 
         "jobs_by_career":

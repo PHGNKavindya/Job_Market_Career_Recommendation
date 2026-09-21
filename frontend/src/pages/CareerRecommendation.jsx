@@ -12,6 +12,7 @@ function CareerRecommendation() {
   const [matchedSkills, setMatchedSkills] = useState([])
   const [unmatchedSkills, setUnmatchedSkills] = useState([])
   const [skillGap, setSkillGap] = useState([])
+  const [skillGapCareer, setSkillGapCareer] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -111,6 +112,8 @@ setUnmatchedSkills(data.unmatched_skills || [])
 if (data.recommendations && data.recommendations.length > 0) {
 
   const bestCareer = data.recommendations[0].career
+  
+  setSkillGapCareer(bestCareer)
 
   const gapResponse = await fetch(
     `http://127.0.0.1:5000/api/skill-gap/${encodeURIComponent(bestCareer)}`,
@@ -343,12 +346,18 @@ if (data.recommendations && data.recommendations.length > 0) {
   <div className="skill-gap-section">
 
     <h2>
-      Skills You Should Develop
+      Skill Gap Analysis
     </h2>
 
+    <h3 className="skill-gap-career">
+      Recommended Career: {skillGapCareer}
+    </h3>
+
     <p>
-      These skills are important for your top recommended
-      career but are not currently included in your skill profile.
+      These are the important skills for your top recommended
+      career that are not currently in your skill profile.
+      The percentage represents how frequently each skill
+      appears in job postings for this career.
     </p>
 
     <div className="skill-gap-list">

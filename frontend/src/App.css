@@ -2094,3 +2094,52 @@ footer {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* =========================
+   CAREER DESCRIPTION INPUT
+========================= */
+
+.description-section {
+  margin-top: 28px;
+  text-align: left;
+}
+
+.description-section h2 {
+  color: #111827;
+  font-size: 18px;
+  margin: 0 0 6px;
+}
+
+.description-section p {
+  color: #6b7280;
+  font-size: 13px;
+  margin: 0 0 12px;
+  line-height: 1.6;
+}
+
+.description-section textarea {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 150px;
+  padding: 14px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #111827;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.6;
+  resize: vertical;
+  outline: none;
+}
+
+.description-section textarea::placeholder {
+  color: #9ca3af;
+  opacity: 1;
+}
+
+.description-section textarea:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.08);
+}

@@ -3,10 +3,13 @@ import { Link } from 'react-router-dom'
 
 function CareerRecommendation() {
   const [skillInput, setSkillInput] = useState('')
+  const [description, setDescription] = useState('')
+
   const [skills, setSkills] = useState(() => {
-  const savedSkills = sessionStorage.getItem('userSkills')
-  return savedSkills ? JSON.parse(savedSkills) : []
+    const savedSkills = sessionStorage.getItem('userSkills')
+    return savedSkills ? JSON.parse(savedSkills) : []
   })
+
   const [availableSkills, setAvailableSkills] = useState([])
   const [recommendations, setRecommendations] = useState([])
   const [matchedSkills, setMatchedSkills] = useState([])
@@ -16,14 +19,15 @@ function CareerRecommendation() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
+  // Save user skills
   useEffect(() => {
-  sessionStorage.setItem(
-    'userSkills',
-    JSON.stringify(skills)
-  )
+    sessionStorage.setItem(
+      'userSkills',
+      JSON.stringify(skills)
+    )
   }, [skills])
 
-
+  // Load available skills
   useEffect(() => {
     const fetchSkills = async () => {
       try {
@@ -38,17 +42,23 @@ function CareerRecommendation() {
         }
 
         setAvailableSkills(
-          (data.skills || []).map((item) => item.skill)
+          (data.skills || []).map(
+            (item) => item.skill
+          )
         )
 
       } catch (err) {
-        console.error('Failed to load skills:', err)
+        console.error(
+          'Failed to load skills:',
+          err
+        )
       }
     }
 
     fetchSkills()
   }, [])
 
+  // Add skill
   const addSkill = () => {
     const skill = skillInput.trim()
 
@@ -56,7 +66,8 @@ function CareerRecommendation() {
 
     const matchedSkill = availableSkills.find(
       (item) =>
-        item.toLowerCase() === skill.toLowerCase()
+        item.toLowerCase() ===
+        skill.toLowerCase()
     )
 
     if (!matchedSkill) {
@@ -67,22 +78,37 @@ function CareerRecommendation() {
     }
 
     if (!skills.includes(matchedSkill)) {
-      setSkills([...skills, matchedSkill])
+      setSkills([
+        ...skills,
+        matchedSkill
+      ])
     }
 
     setSkillInput('')
     setError('')
   }
 
+  // Remove skill
   const removeSkill = (skillToRemove) => {
     setSkills(
-      skills.filter((skill) => skill !== skillToRemove)
+      skills.filter(
+        (skill) =>
+          skill !== skillToRemove
+      )
     )
   }
 
+  // Get career recommendations
   const getRecommendations = async () => {
-    if (skills.length === 0) {
-      setError('Please add at least one skill.')
+
+    // User must provide either skills or description
+    if (
+      skills.length === 0 &&
+      !description.trim()
+    ) {
+      setError(
+        'Please add at least one skill or enter a description.'
+      )
       return
     }
 
@@ -90,70 +116,169 @@ function CareerRecommendation() {
     setError('')
 
     try {
-      const response = await fetch(
-        'http://127.0.0.1:5000/api/recommend',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            skills: skills,
-          }),
+
+      let data
+
+      // ==========================================
+      // DESCRIPTION-ONLY RECOMMENDATION
+      // ==========================================
+
+      if (
+        description.trim() &&
+        skills.length === 0
+      ) {
+
+        const response = await fetch(
+          'http://127.0.0.1:5000/api/recommend-description',
+          {
+            method: 'POST',
+
+            headers: {
+              'Content-Type':
+                'application/json',
+            },
+
+            body: JSON.stringify({
+              description:
+                description,
+            }),
+          }
+        )
+
+        data = await response.json()
+
+        if (!response.ok) {
+          throw new Error(
+            data.error ||
+            'Something went wrong.'
+          )
         }
-      )
 
-      const data = await response.json()
+        setRecommendations(
+          data.recommendations || []
+        )
 
-      if (!response.ok) {
-        throw new Error(data.error || 'Something went wrong.')
+        setMatchedSkills([])
+        setUnmatchedSkills([])
+        setSkillGap([])
+        setSkillGapCareer('')
+
       }
 
-      setRecommendations(data.recommendations || [])
-setMatchedSkills(data.matched_skills || [])
-setUnmatchedSkills(data.unmatched_skills || [])
+      // ==========================================
+      // SKILL-BASED RECOMMENDATION
+      // ==========================================
 
-// Get skill gap for the top recommended career
-if (data.recommendations && data.recommendations.length > 0) {
+      else {
 
-  const bestCareer = data.recommendations[0].career
-  
-  setSkillGapCareer(bestCareer)
+        const response = await fetch(
+          'http://127.0.0.1:5000/api/recommend',
+          {
+            method: 'POST',
 
-  const gapResponse = await fetch(
-    `http://127.0.0.1:5000/api/skill-gap/${encodeURIComponent(bestCareer)}`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        skills: skills,
-      }),
-    }
-  )
+            headers: {
+              'Content-Type':
+                'application/json',
+            },
 
-  const gapData = await gapResponse.json()
+            body: JSON.stringify({
+              skills: skills,
+            }),
+          }
+        )
 
-  if (gapResponse.ok) {
-    setSkillGap(gapData.missing_skills || [])
-  }
+        data = await response.json()
 
-}
+        if (!response.ok) {
+          throw new Error(
+            data.error ||
+            'Something went wrong.'
+          )
+        }
+
+        setRecommendations(
+          data.recommendations || []
+        )
+
+        setMatchedSkills(
+          data.matched_skills || []
+        )
+
+        setUnmatchedSkills(
+          data.unmatched_skills || []
+        )
+
+        // ==========================================
+        // SKILL GAP ANALYSIS
+        // ==========================================
+
+        if (
+          data.recommendations &&
+          data.recommendations.length > 0
+        ) {
+
+          const bestCareer =
+            data.recommendations[0].career
+
+          setSkillGapCareer(
+            bestCareer
+          )
+
+          const gapResponse =
+            await fetch(
+              `http://127.0.0.1:5000/api/skill-gap/${encodeURIComponent(bestCareer)}`,
+              {
+                method: 'POST',
+
+                headers: {
+                  'Content-Type':
+                    'application/json',
+                },
+
+                body: JSON.stringify({
+                  skills: skills,
+                }),
+              }
+            )
+
+          const gapData =
+            await gapResponse.json()
+
+          if (gapResponse.ok) {
+
+            setSkillGap(
+              gapData.missing_skills ||
+              []
+            )
+
+          }
+        }
+      }
 
     } catch (err) {
+
+      console.error(err)
+
       setError(
         'Unable to connect to the recommendation system.'
       )
+
     } finally {
+
       setLoading(false)
+
     }
   }
 
   return (
     <div className="recommendation-page">
 
+      {/* ==========================================
+          HEADER
+      ========================================== */}
+
       <div className="recommendation-header">
+
         <p className="tagline">
           PERSONALIZED CAREER GUIDANCE
         </p>
@@ -163,28 +288,44 @@ if (data.recommendations && data.recommendations.length > 0) {
         </h1>
 
         <p>
-          Enter your skills and our data-driven recommendation
-          system will identify careers that best match your skill profile.
+          Enter your skills or describe yourself
+          and our data-driven recommendation system
+          will identify careers that best match
+          your profile.
         </p>
+
       </div>
 
 
       <div className="recommendation-container">
 
+        {/* ==========================================
+            INPUT CARD
+        ========================================== */}
+
         <div className="skill-input-card">
 
-          <h2>What skills do you have?</h2>
+          <h2>
+            What skills do you have?
+          </h2>
 
           <p>
             Add the skills you currently have.
           </p>
+
+
+          {/* SKILL INPUT */}
 
           <div className="skill-input-row">
 
             <input
               type="text"
               value={skillInput}
-              onChange={(e) => setSkillInput(e.target.value)}
+              onChange={(e) =>
+                setSkillInput(
+                  e.target.value
+                )
+              }
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   addSkill()
@@ -195,40 +336,90 @@ if (data.recommendations && data.recommendations.length > 0) {
             />
 
             <datalist id="skills-list">
-              {availableSkills.map((skill) => (
-                <option
-                  value={skill}
-                  key={skill}
-                />
-              ))}
+
+              {availableSkills.map(
+                (skill) => (
+                  <option
+                    value={skill}
+                    key={skill}
+                  />
+                )
+              )}
+
             </datalist>
 
-            <button onClick={addSkill}>
+            <button
+              onClick={addSkill}
+            >
               Add Skill
             </button>
 
           </div>
 
 
-          <div className="skills-list">
+          {/* ==========================================
+              DESCRIPTION INPUT
+          ========================================== */}
 
-            {skills.map((skill) => (
-              <div
-                className="skill-tag"
-                key={skill}
-              >
-                {skill}
+          <div className="description-section">
 
-                <button
-                  onClick={() => removeSkill(skill)}
-                >
-                  ×
-                </button>
-              </div>
-            ))}
+            <h2>
+              Or Describe Yourself
+            </h2>
+
+            <p>
+              Describe your skills, experience,
+              education, interests, and the type
+              of work you are interested in.
+            </p>
+
+            <textarea
+              value={description}
+              onChange={(e) =>
+                setDescription(
+                  e.target.value
+                )
+              }
+              placeholder="Example: I have experience in Python and SQL. I enjoy working with data, building machine learning models, analyzing datasets and creating visualizations..."
+              rows="7"
+            />
 
           </div>
 
+
+          {/* ==========================================
+              SELECTED SKILLS
+          ========================================== */}
+
+          <div className="skills-list">
+
+            {skills.map(
+              (skill) => (
+
+                <div
+                  className="skill-tag"
+                  key={skill}
+                >
+
+                  {skill}
+
+                  <button
+                    onClick={() =>
+                      removeSkill(skill)
+                    }
+                  >
+                    ×
+                  </button>
+
+                </div>
+
+              )
+            )}
+
+          </div>
+
+
+          {/* ERROR */}
 
           {error && (
             <p className="error-message">
@@ -237,107 +428,228 @@ if (data.recommendations && data.recommendations.length > 0) {
           )}
 
 
+          {/* RECOMMEND BUTTON */}
+
           <button
             className="recommend-button"
-            onClick={getRecommendations}
+            onClick={
+              getRecommendations
+            }
             disabled={loading}
           >
+
             {loading
-              ? 'Analyzing Skills...'
+              ? 'Analyzing Profile...'
               : 'Get Career Recommendations'}
+
           </button>
 
         </div>
 
 
+        {/* ==========================================
+            RECOMMENDATION RESULTS
+        ========================================== */}
+
         {recommendations.length > 0 && (
 
           <div className="results-section">
 
-            <h2>Your Career Recommendations</h2>
+            <h2>
+              Your Career Recommendations
+            </h2>
 
             <p>
-              Based on the skills you provided, these careers
-              have the strongest similarity to your skill profile.
+              Based on your profile, these careers
+              have the strongest similarity to your
+              skills or description.
             </p>
 
 
             <div className="recommendation-grid">
 
-              {recommendations.map((item, index) => (
+              {recommendations.map(
+                (item, index) => (
 
-                <Link
-                  to={`/career/${encodeURIComponent(item.career)}`}
-                  className={`career-result-card ${
-                    index === 0 ? 'top-career' : ''
-                  }`}
-                  key={item.career}
-                >
+                  <Link
+                    to={`/career/${encodeURIComponent(
+                      item.career
+                    )}`}
+                    className={`career-result-card ${
+                      index === 0
+                        ? 'top-career'
+                        : ''
+                    }`}
+                    key={item.career}
+                  >
 
-                  <div className="rank">
-                    #{index + 1}
-                  </div>
+                    <div className="rank">
+                      #{index + 1}
+                    </div>
 
-                  <h3>{item.career}</h3>
+                    <h3>
+                      {item.career}
+                    </h3>
 
-                  <div className="match-score">
-                    {item.match_percentage}%
-                  </div>
+                    <div className="match-score">
+                      {
+                        item.match_percentage
+                      }%
+                    </div>
 
-                  <p>
-                    Skill Match
-                  </p>
+                    <p>
+                      Match
+                    </p>
 
-                </Link>
+                  </Link>
 
-              ))}
+                )
+              )}
 
             </div>
 
 
-            <div className="skill-status">
+            {/* ==========================================
+                SKILL STATUS
+            ========================================== */}
 
-              <div>
+            {matchedSkills.length > 0 && (
 
-                <h3>Matched Skills</h3>
-
-                <div className="status-list">
-
-                  {matchedSkills.map((skill) => (
-                    <span
-                      className="matched-tag"
-                      key={skill}
-                    >
-                      ✓ {skill}
-                    </span>
-                  ))}
-
-                </div>
-
-              </div>
-
-
-              {unmatchedSkills.length > 0 && (
+              <div className="skill-status">
 
                 <div>
 
-                  <h3>Skills Not in Dataset</h3>
+                  <h3>
+                    Matched Skills
+                  </h3>
 
                   <div className="status-list">
 
-                    {unmatchedSkills.map((skill) => (
-                      <span
-                        className="unmatched-tag"
-                        key={skill}
-                      >
-                        {skill}
-                      </span>
-                    ))}
+                    {matchedSkills.map(
+                      (skill) => (
+
+                        <span
+                          className="matched-tag"
+                          key={skill}
+                        >
+                          ✓ {skill}
+                        </span>
+
+                      )
+                    )}
 
                   </div>
 
                 </div>
 
+
+                {unmatchedSkills.length > 0 && (
+
+                  <div>
+
+                    <h3>
+                      Skills Not in Dataset
+                    </h3>
+
+                    <div className="status-list">
+
+                      {unmatchedSkills.map(
+                        (skill) => (
+
+                          <span
+                            className="unmatched-tag"
+                            key={skill}
+                          >
+                            {skill}
+                          </span>
+
+                        )
+                      )}
+
+                    </div>
+
+                  </div>
+
+                )}
+
+              </div>
+
+            )}
+
+          </div>
+
+        )}
+
+
+        {/* ==========================================
+            SKILL GAP ANALYSIS
+        ========================================== */}
+
+        {skillGap.length > 0 && (
+
+          <div className="skill-gap-section">
+
+            <h2>
+              Skill Gap Analysis
+            </h2>
+
+            <h3 className="skill-gap-career">
+              Recommended Career: {
+                skillGapCareer
+              }
+            </h3>
+
+            <p>
+              These are the important skills
+              for your top recommended career
+              that are not currently in your
+              skill profile. The percentage
+              represents how frequently each
+              skill appears in job postings
+              for this career.
+            </p>
+
+
+            <div className="skill-gap-list">
+
+              {skillGap.map(
+                (item) => (
+
+                  <div
+                    className="skill-gap-item"
+                    key={item.skill}
+                  >
+
+                    <div className="skill-gap-info">
+
+                      <span>
+                        {item.skill}
+                      </span>
+
+                      <strong>
+                        {
+                          item.demand_percentage
+                        }%
+                      </strong>
+
+                    </div>
+
+
+                    <div className="skill-gap-bar-background">
+
+                      <div
+                        className="skill-gap-bar"
+                        style={{
+                          width:
+                            `${item.demand_percentage}%`
+                        }}
+                      />
+
+                    </div>
+
+                  </div>
+
+                )
               )}
 
             </div>
@@ -346,71 +658,9 @@ if (data.recommendations && data.recommendations.length > 0) {
 
         )}
 
-        {skillGap.length > 0 && (
-
-  <div className="skill-gap-section">
-
-    <h2>
-      Skill Gap Analysis
-    </h2>
-
-    <h3 className="skill-gap-career">
-      Recommended Career: {skillGapCareer}
-    </h3>
-
-    <p>
-      These are the important skills for your top recommended
-      career that are not currently in your skill profile.
-      The percentage represents how frequently each skill
-      appears in job postings for this career.
-    </p>
-
-    <div className="skill-gap-list">
-
-      {skillGap.map((item) => (
-
-        <div
-          className="skill-gap-item"
-          key={item.skill}
-        >
-
-          <div className="skill-gap-info">
-
-            <span>
-              {item.skill}
-            </span>
-
-            <strong>
-              {item.demand_percentage}%
-            </strong>
-
-          </div>
-
-          <div className="skill-gap-bar-background">
-
-            <div
-              className="skill-gap-bar"
-              style={{
-                width: `${item.demand_percentage}%`
-              }}
-            />
-
-          </div>
-
-        </div>
-
-      ))}
-
-    </div>
-
-  </div>
-
-)}
-
       </div>
 
     </div>
-    
   )
 }
 

@@ -2,7 +2,9 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import os
 import pandas as pd
+
 from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 
 # ==================================================
@@ -50,7 +52,8 @@ job_data["posted_date"] = pd.to_datetime(
 def home():
 
     return jsonify({
-        "message": "Job Market Career Recommendation API is running"
+        "message":
+            "Job Market Career Recommendation API is running"
     })
 
 
@@ -90,12 +93,17 @@ def get_skills():
 
     for skill, count in skill_counts.items():
 
-        demand_percentage = (count / total_jobs) * 100
+        demand_percentage = (
+            count / total_jobs
+        ) * 100
 
         skills.append({
             "skill": skill,
             "count": int(count),
-            "demand": round(demand_percentage, 2)
+            "demand": round(
+                demand_percentage,
+                2
+            )
         })
 
     return jsonify({
@@ -105,24 +113,32 @@ def get_skills():
 
 
 # ==================================================
-# Career Recommendation
+# Career Recommendation - Skills
 # ==================================================
 
-@app.route("/api/recommend", methods=["POST"])
+@app.route(
+    "/api/recommend",
+    methods=["POST"]
+)
 def recommend_careers():
 
     data = request.get_json()
 
-    user_skills = data.get("skills", [])
+    user_skills = data.get(
+        "skills",
+        []
+    )
 
     if not user_skills:
 
         return jsonify({
-            "error": "Please provide at least one skill."
+            "error":
+                "Please provide at least one skill."
         }), 400
 
 
     # Clean skill names
+
     user_skills = [
         skill.strip()
         for skill in user_skills
@@ -131,6 +147,7 @@ def recommend_careers():
 
 
     # Skills available in dataset
+
     matched_skills = [
         skill
         for skill in user_skills
@@ -139,6 +156,7 @@ def recommend_careers():
 
 
     # Skills not available in dataset
+
     unmatched_skills = [
         skill
         for skill in user_skills
@@ -147,6 +165,7 @@ def recommend_careers():
 
 
     # Create user skill vector
+
     user_vector = pd.Series(
         0,
         index=career_skill_vectors.columns,
@@ -160,42 +179,64 @@ def recommend_careers():
 
 
     # Calculate cosine similarity
+
     similarity_scores = cosine_similarity(
-        user_vector.values.reshape(1, -1),
+        user_vector.values.reshape(
+            1,
+            -1
+        ),
         career_skill_vectors.values
     )[0]
 
 
     # Create recommendation results
+
     recommendations = pd.DataFrame({
 
-        "career": career_skill_vectors.index,
+        "career":
+            career_skill_vectors.index,
 
-        "similarity_score": similarity_scores
+        "similarity_score":
+            similarity_scores
 
     })
 
 
-    recommendations["match_percentage"] = (
-        recommendations["similarity_score"] * 100
+    recommendations[
+        "match_percentage"
+    ] = (
+        recommendations[
+            "similarity_score"
+        ] * 100
     ).round(2)
 
 
-    recommendations = recommendations.sort_values(
-        "similarity_score",
-        ascending=False
+    recommendations = (
+        recommendations
+        .sort_values(
+            "similarity_score",
+            ascending=False
+        )
     )
 
 
-    recommendations = recommendations.head(5)
+    recommendations = (
+        recommendations
+        .head(5)
+    )
 
 
     return jsonify({
 
         "recommendations":
             recommendations[
-                ["career", "match_percentage"]
-            ].to_dict(orient="records"),
+                [
+                    "career",
+                    "match_percentage"
+                ]
+            ].to_dict(
+                orient="records"
+            ),
 
         "matched_skills":
             matched_skills,
@@ -210,22 +251,32 @@ def recommend_careers():
 # Career Details
 # ==================================================
 
-@app.route("/api/career/<career>")
+@app.route(
+    "/api/career/<career>"
+)
 def get_career_details(career):
 
     if career not in career_skill_vectors.index:
 
         return jsonify({
-            "error": "Career not found."
+            "error":
+                "Career not found."
         }), 404
 
 
-    career_profile = career_skill_vectors.loc[career]
+    career_profile = (
+        career_skill_vectors.loc[career]
+    )
 
 
-    required_skills = career_profile[
-        career_profile > 0
-    ].sort_values(ascending=False)
+    required_skills = (
+        career_profile[
+            career_profile > 0
+        ]
+        .sort_values(
+            ascending=False
+        )
+    )
 
 
     skills = []
@@ -238,16 +289,21 @@ def get_career_details(career):
             "skill": skill,
 
             "demand_percentage":
-                round(float(demand * 100), 2)
+                round(
+                    float(demand * 100),
+                    2
+                )
 
         })
 
 
     return jsonify({
 
-        "career": career,
+        "career":
+            career,
 
-        "required_skills": skills
+        "required_skills":
+            skills
 
     })
 
@@ -256,29 +312,38 @@ def get_career_details(career):
 # Skill Gap Analysis
 # ==================================================
 
-@app.route("/api/skill-gap/<career>", methods=["POST"])
+@app.route(
+    "/api/skill-gap/<career>",
+    methods=["POST"]
+)
 def get_skill_gap(career):
 
     if career not in career_skill_vectors.index:
 
         return jsonify({
-            "error": "Career not found."
+            "error":
+                "Career not found."
         }), 404
 
 
     data = request.get_json()
 
-    user_skills = data.get("skills", [])
+    user_skills = data.get(
+        "skills",
+        []
+    )
 
 
     if not user_skills:
 
         return jsonify({
-            "error": "Please provide at least one skill."
+            "error":
+                "Please provide at least one skill."
         }), 400
 
 
     # Clean user skills
+
     user_skills = [
         skill.strip()
         for skill in user_skills
@@ -287,7 +352,10 @@ def get_skill_gap(career):
 
 
     # Skills available in dataset
-    available_skills = career_skill_vectors.columns
+
+    available_skills = (
+        career_skill_vectors.columns
+    )
 
 
     matched_skills = [
@@ -305,18 +373,31 @@ def get_skill_gap(career):
 
 
     # Get required skills for career
-    career_profile = career_skill_vectors.loc[career]
+
+    career_profile = (
+        career_skill_vectors.loc[career]
+    )
 
 
-    required_skills = career_profile[
-        career_profile > 0
-    ].sort_values(ascending=False)
+    required_skills = (
+        career_profile[
+            career_profile > 0
+        ]
+        .sort_values(
+            ascending=False
+        )
+    )
 
 
     # Find missing skills
-    missing_skills = required_skills[
-        ~required_skills.index.isin(matched_skills)
-    ]
+
+    missing_skills = (
+        required_skills[
+            ~required_skills.index.isin(
+                matched_skills
+            )
+        ]
+    )
 
 
     skill_gap = []
@@ -326,17 +407,22 @@ def get_skill_gap(career):
 
         skill_gap.append({
 
-            "skill": skill,
+            "skill":
+                skill,
 
             "demand_percentage":
-                round(float(demand * 100), 2)
+                round(
+                    float(demand * 100),
+                    2
+                )
 
         })
 
 
     return jsonify({
 
-        "career": career,
+        "career":
+            career,
 
         "matched_skills":
             matched_skills,
@@ -361,9 +447,17 @@ def get_dashboard_data():
     # Get optional filters
     # --------------------------------------------------
 
-    career_filter = request.args.get("career")
-    industry_filter = request.args.get("industry")
-    experience_filter = request.args.get("experience")
+    career_filter = request.args.get(
+        "career"
+    )
+
+    industry_filter = request.args.get(
+        "industry"
+    )
+
+    experience_filter = request.args.get(
+        "experience"
+    )
 
 
     # --------------------------------------------------
@@ -373,24 +467,36 @@ def get_dashboard_data():
     filtered_data = job_data.copy()
 
 
-    if career_filter and career_filter != "All":
+    if (
+        career_filter
+        and career_filter != "All"
+    ):
 
         filtered_data = filtered_data[
-            filtered_data["title"] == career_filter
+            filtered_data["title"]
+            == career_filter
         ]
 
 
-    if industry_filter and industry_filter != "All":
+    if (
+        industry_filter
+        and industry_filter != "All"
+    ):
 
         filtered_data = filtered_data[
-            filtered_data["industry"] == industry_filter
+            filtered_data["industry"]
+            == industry_filter
         ]
 
 
-    if experience_filter and experience_filter != "All":
+    if (
+        experience_filter
+        and experience_filter != "All"
+    ):
 
         filtered_data = filtered_data[
-            filtered_data["experience_level"] == experience_filter
+            filtered_data["experience_level"]
+            == experience_filter
         ]
 
 
@@ -398,9 +504,14 @@ def get_dashboard_data():
     # Basic Statistics
     # --------------------------------------------------
 
-    total_jobs = len(filtered_data)
+    total_jobs = len(
+        filtered_data
+    )
 
-    total_careers = filtered_data["title"].nunique()
+    total_careers = (
+        filtered_data["title"]
+        .nunique()
+    )
 
 
     # --------------------------------------------------
@@ -528,14 +639,20 @@ def get_dashboard_data():
     # Top Skills
     # --------------------------------------------------
 
-    skill_counts = skills.value_counts().head(10)
+    skill_counts = (
+        skills
+        .value_counts()
+        .head(10)
+    )
 
 
     top_skills = pd.DataFrame({
 
-        "skill": skill_counts.index,
+        "skill":
+            skill_counts.index,
 
-        "job_postings": skill_counts.values
+        "job_postings":
+            skill_counts.values
 
     })
 
@@ -548,26 +665,44 @@ def get_dashboard_data():
 
         "summary": {
 
-            "total_jobs": int(total_jobs),
+            "total_jobs":
+                int(total_jobs),
 
-            "total_careers": int(total_careers),
+            "total_careers":
+                int(total_careers),
 
-            "total_skills": int(total_skills),
+            "total_skills":
+                int(total_skills),
 
-            "average_salary": round(
-                float(filtered_data["salary_avg"].mean()),
-                2
-            ),
+            "average_salary":
+                round(
+                    float(
+                        filtered_data[
+                            "salary_avg"
+                        ].mean()
+                    ),
+                    2
+                ),
 
-            "average_applications": round(
-                float(filtered_data["applications"].mean()),
-                2
-            ),
+            "average_applications":
+                round(
+                    float(
+                        filtered_data[
+                            "applications"
+                        ].mean()
+                    ),
+                    2
+                ),
 
-            "average_days_to_fill": round(
-                float(filtered_data["days_to_fill"].mean()),
-                2
-            )
+            "average_days_to_fill":
+                round(
+                    float(
+                        filtered_data[
+                            "days_to_fill"
+                        ].mean()
+                    ),
+                    2
+                )
 
         },
 
@@ -612,6 +747,367 @@ def get_dashboard_data():
             top_skills.to_dict(
                 orient="records"
             )
+
+    })
+
+
+# ==================================================
+# Description-Based NLP Career Recommendation
+# ==================================================
+
+@app.route(
+    "/api/recommend-description",
+    methods=["POST"]
+)
+def recommend_from_description():
+
+    data = request.get_json()
+
+    description = data.get(
+        "description",
+        ""
+    ).strip()
+
+
+    if not description:
+
+        return jsonify({
+            "error":
+                "Please enter a description."
+        }), 400
+
+
+    # ==================================================
+    # 1. CLEAN USER DESCRIPTION
+    # ==================================================
+
+    user_text = description.lower()
+
+
+    # ==================================================
+    # 2. IDENTIFY SKILLS FROM DESCRIPTION
+    # ==================================================
+
+    available_skills = (
+        career_skill_vectors
+        .columns
+        .tolist()
+    )
+
+
+    detected_skills = []
+
+
+    for skill in available_skills:
+
+        skill_lower = skill.lower()
+
+        if skill_lower in user_text:
+
+            detected_skills.append(
+                skill
+            )
+
+
+    # ==================================================
+    # 3. CREATE USER SKILL VECTOR
+    # ==================================================
+
+    user_skill_vector = pd.Series(
+
+        0,
+
+        index=
+            career_skill_vectors.columns,
+
+        dtype=float
+
+    )
+
+
+    for skill in detected_skills:
+
+        user_skill_vector[skill] = 1
+
+
+    # ==================================================
+    # 4. SKILL-BASED CAREER SIMILARITY
+    # ==================================================
+
+    if detected_skills:
+
+        skill_similarity = (
+            cosine_similarity(
+
+                user_skill_vector.values.reshape(
+                    1,
+                    -1
+                ),
+
+                career_skill_vectors.values
+
+            )[0]
+        )
+
+    else:
+
+        skill_similarity = (
+            pd.Series(
+
+                0,
+
+                index=
+                    career_skill_vectors.index,
+
+                dtype=float
+
+            ).values
+        )
+
+
+    # ==================================================
+    # 5. NLP TF-IDF ANALYSIS
+    # ==================================================
+
+    text_data = job_data[
+        [
+            "title",
+            "description"
+        ]
+    ].dropna().copy()
+
+
+    text_data["description"] = (
+
+        text_data[
+            "description"
+        ]
+        .astype(str)
+        .str.lower()
+
+    )
+
+
+    vectorizer = TfidfVectorizer(
+
+        stop_words="english",
+
+        max_features=5000,
+
+        ngram_range=(1, 2)
+
+    )
+
+
+    job_vectors = (
+        vectorizer.fit_transform(
+            text_data["description"]
+        )
+    )
+
+
+    user_vector = (
+        vectorizer.transform([
+            user_text
+        ])
+    )
+
+
+    # ==================================================
+    # 6. CALCULATE TEXT SIMILARITY
+    # ==================================================
+
+    text_similarities = (
+        cosine_similarity(
+
+            user_vector,
+
+            job_vectors
+
+        )[0]
+    )
+
+
+    text_data[
+        "text_similarity"
+    ] = text_similarities
+
+
+    # ==================================================
+    # 7. CAREER-LEVEL NLP SCORE
+    # ==================================================
+
+    career_text_scores = (
+
+        text_data
+        .groupby("title")[
+            "text_similarity"
+        ]
+        .mean()
+
+    )
+
+
+    career_text_scores = (
+
+        career_text_scores
+        .reindex(
+            career_skill_vectors.index
+        )
+        .fillna(0)
+
+    )
+
+
+    # ==================================================
+    # 8. NORMALIZE NLP SCORE
+    # ==================================================
+
+    max_text_score = (
+        career_text_scores.max()
+    )
+
+
+    if max_text_score > 0:
+
+        normalized_text_scores = (
+            career_text_scores
+            / max_text_score
+        )
+
+    else:
+
+        normalized_text_scores = (
+            career_text_scores * 0
+        )
+
+
+    # ==================================================
+    # 9. COMBINE NLP + SKILL SIMILARITY
+    # ==================================================
+
+    if detected_skills:
+
+        final_scores = (
+
+            (
+                normalized_text_scores.values
+                * 0.40
+            )
+
+            +
+
+            (
+                skill_similarity
+                * 0.60
+            )
+
+        )
+
+    else:
+
+        final_scores = (
+            normalized_text_scores.values
+        )
+
+
+    # ==================================================
+    # 10. CREATE RECOMMENDATION TABLE
+    # ==================================================
+
+    recommendations = pd.DataFrame({
+
+        "career":
+            career_skill_vectors.index,
+
+        "score":
+            final_scores
+
+    })
+
+
+    recommendations = (
+
+        recommendations
+
+        .sort_values(
+            "score",
+            ascending=False
+        )
+
+        .reset_index(
+            drop=True
+        )
+
+    )
+
+
+    # ==================================================
+    # 11. RELATIVE MATCH PERCENTAGE
+    # ==================================================
+
+    max_score = (
+        recommendations[
+            "score"
+        ].max()
+    )
+
+
+    if max_score > 0:
+
+        recommendations[
+            "match_percentage"
+        ] = (
+
+            recommendations[
+                "score"
+            ]
+
+            /
+
+            max_score
+
+            *
+
+            100
+
+        ).round(2)
+
+    else:
+
+        recommendations[
+            "match_percentage"
+        ] = 0
+
+
+    # ==================================================
+    # 12. TOP 5 RECOMMENDATIONS
+    # ==================================================
+
+    recommendations = (
+        recommendations
+        .head(5)
+    )
+
+
+    # ==================================================
+    # 13. RETURN RESULTS
+    # ==================================================
+
+    return jsonify({
+
+        "recommendations":
+            recommendations[
+                [
+                    "career",
+                    "match_percentage"
+                ]
+            ].to_dict(
+                orient="records"
+            ),
+
+        "detected_skills":
+            detected_skills
 
     })
 
